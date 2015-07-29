@@ -36,6 +36,8 @@ function dummyuser_url() {
     } else {
         $pageURL .= $_SERVER["SERVER_NAME"].$_SERVER["REQUEST_URI"];
     }
+    $pageURL = str_replace("emailrequired=true", "", $pageURL);
+    $pageURL = str_replace("emailtaken=true", "", $pageURL);
     return $pageURL;
 }
 

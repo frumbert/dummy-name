@@ -7,12 +7,18 @@ require( dirname(__FILE__) . '/../../../wp-load.php' );
         $redirect   = $_POST["du-redirect"];
 
         if (email_exists($email)) {
-            wp_redirect( $redirect . "?emailtaken=true" );
+            if (!isset($_GET["emailtaken"])) {
+                $redirect .= (strpos($redirect,'?') !== false) ? "&" : "?" . "emailtaken=true";
+            }
+            wp_redirect( $redirect );
             exit;
         }
 
         if (empty($email)) {
-            wp_redirect( $redirect . "?emailrequired=true" );
+            if (!isset($_GET["emailrequired"])) {
+                $redirect .= (strpos($redirect,'?') !== false) ? "&" : "?" . "emailrequired=true";
+            }
+            wp_redirect( $redirect );
             exit;
         }
 
