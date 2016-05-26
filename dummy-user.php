@@ -16,6 +16,11 @@ function dummyuser_render() {
         echo '<label>Email (required): ';
         echo '<input type="email" name="du-email" value="' . ( isset( $_POST["du-email"] ) ? esc_attr( $_POST["du-email"] ) : '' ) . '" size="40" />';
         echo '</label>';
+
+        echo '<label>Name (optional): ';
+        echo '<input type="email" name="du-name" value="' . ( isset( $_POST["du-name"] ) ? esc_attr( $_POST["du-name"] ) : '' ) . '" size="40" />';
+        echo '</label>';
+
         echo '<input type="submit" name="du-submitted" value="Register"/>';
         echo '</form>';
         if (isset($_GET['emailtaken']) && $_GET['emailtaken'] == "true") {
@@ -44,7 +49,11 @@ function dummyuser_url() {
 // do the sign in and redirect
 function dummyuser_capture() {
     if ( isset( $_POST['du-submitted'] ) ) {
+        $nicename = "Dummy";
         $email   = sanitize_email( $_POST["du-email"] );
+        if (isset($_POST["du-name"])) {
+            $nicename = sanitize_title( $_POST["du-name"] );
+        }
         $redirect   = $_POST["du-redirect"];
 
         // generate user data
@@ -55,7 +64,7 @@ function dummyuser_capture() {
             'ID' => '',
             'user_pass' => $password,
             'user_login' => $username,
-            'user_nicename' => 'Dummy',
+            'user_nicename' => $nicename,
             'user_email' => $email,
             'display_name' => 'Dummy',
             'first_name' => $name,
@@ -76,6 +85,7 @@ function dummyuser_capture() {
         $message .= "Username: $username\n";
         $message .= "Password: $password\n";
         $message .= "Email: $email\n";
+        $message .= "Nice Name: $nicename\n";
         wp_mail( $to, "Dummy user created", $message, $headers );
 
         // authenicate the user
@@ -85,7 +95,7 @@ function dummyuser_capture() {
         $creds['remember'] = true;
         $user = wp_signon( $creds, true );
         wp_set_auth_cookie($user->ID, true);
-print_r($user);
+// print_r($user);
         // redirect page
         // wp_redirect( $redirect );
         echo "<meta http-equiv='refresh' content='20; url=$redirect'>";
