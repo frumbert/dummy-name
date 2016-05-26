@@ -18,7 +18,7 @@ function dummyuser_render() {
         echo '</label>';
 
         echo '<label>Name (optional): ';
-        echo '<input type="email" name="du-name" value="' . ( isset( $_POST["du-name"] ) ? esc_attr( $_POST["du-name"] ) : '' ) . '" size="40" />';
+        echo '<input type="text" name="du-name" value="' . ( isset( $_POST["du-name"] ) ? esc_attr( $_POST["du-name"] ) : '' ) . '" size="40" />';
         echo '</label>';
 
         echo '<input type="submit" name="du-submitted" value="Register"/>';
